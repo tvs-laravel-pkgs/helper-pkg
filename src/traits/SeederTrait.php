@@ -1,5 +1,5 @@
 <?php
-namespace Abs\Helper\Traits;
+namespace Abs\HelperPkg\Traits;
 
 trait SeederTrait {
 	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command) {
