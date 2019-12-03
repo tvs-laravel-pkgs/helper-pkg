@@ -1,5 +1,6 @@
 <?php
 
+namespace Abs\HelperPkg\Database\Seeds;
 use App\Company;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
