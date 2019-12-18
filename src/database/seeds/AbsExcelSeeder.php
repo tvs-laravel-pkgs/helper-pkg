@@ -2,6 +2,7 @@
 
 namespace Abs\HelperPkg\Database\Seeds;
 use App\Company;
+use Excel;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
