@@ -38,4 +38,14 @@ trait SeederTrait {
 		dump($success . ' Records Processed');
 	}
 
+	public static function createMultipleFromArrays($records) {
+		foreach ($records as $id => $detail) {
+			$record = self::firstOrNew([
+				'id' => $id,
+			]);
+			$record->fill($detail['data']);
+			$record->save();
+		}
+	}
+
 }
