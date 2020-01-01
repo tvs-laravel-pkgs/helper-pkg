@@ -1,10 +1,7 @@
 <?php
+namespace Abs\HelperPkg\Traits;
 
-namespace Abs\DeployHelper;
-
-use Illuminate\Database\Seeder;
-
-class AbsBaseSyncSeeder extends Seeder {
+trait DeployHelperTrait {
 
 	protected function commonCommands() {
 		dump('Executing sudo composer update');
@@ -46,8 +43,5 @@ class AbsBaseSyncSeeder extends Seeder {
 		}
 
 	}
-	public function run() {
-		// $this->commonCommands();
 
-	}
 }
