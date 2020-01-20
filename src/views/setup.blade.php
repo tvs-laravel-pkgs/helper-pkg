@@ -8,9 +8,15 @@
 <script type="text/javascript" src="{{URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/ng-shortcut.js?v=2')}}"></script>
 
 <script type="text/javascript">
-function showErrorNoty(response){
-	if(!response.success){
+function showErrorNoty(res){
+    custom_noty('error', res.error);
 
-	}
+    var errors = '';
+    for (var i in res.errors) {
+        errors += '<li>' + res.errors[i] + '</li>';
+    }
+    if (errors) {
+        custom_noty('error', errors);
+    }
 }
 </script>
