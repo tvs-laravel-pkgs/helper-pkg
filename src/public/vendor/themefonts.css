@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'KelsonSansRegular';
+  src: url('../fonts/themefonts/KelsonSansRegular.eot');
+  src: url('../fonts/themefonts/KelsonSansRegular.eot') format('embedded-opentype'),
+       url('../fonts/themefonts/KelsonSansRegular.woff2') format('woff2'),
+       url('../fonts/themefonts/KelsonSansRegular.woff') format('woff'),
+       url('../fonts/themefonts/KelsonSansRegular.ttf') format('truetype'),
+       url('../fonts/themefonts/KelsonSansRegular.svg#KelsonSansRegular') format('svg');
+}
+@font-face {
+  font-family: 'KelsonSansBold';
+  src: url('../fonts/themefonts/KelsonSansBold.eot');
+  src: url('../fonts/themefonts/KelsonSansBold.eot') format('embedded-opentype'),
+       url('../fonts/themefonts/KelsonSansBold.woff2') format('woff2'),
+       url('../fonts/themefonts/KelsonSansBold.woff') format('woff'),
+       url('../fonts/themefonts/KelsonSansBold.ttf') format('truetype'),
+       url('../fonts/themefonts/KelsonSansBold.svg#KelsonSansBold') format('svg');
+}
+@font-face {
+  font-family: 'KelsonSansLight';
+  src: url('../fonts/themefonts/KelsonSansLight.eot');
+  src: url('../fonts/themefonts/KelsonSansLight.eot') format('embedded-opentype'),
+       url('../fonts/themefonts/KelsonSansLight.woff2') format('woff2'),
+       url('../fonts/themefonts/KelsonSansLight.woff') format('woff'),
+       url('../fonts/themefonts/KelsonSansLight.ttf') format('truetype'),
+       url('../fonts/themefonts/KelsonSansLight.svg#KelsonSansLight') format('svg');
+}
+
