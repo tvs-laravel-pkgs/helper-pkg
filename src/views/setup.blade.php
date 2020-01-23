@@ -4,6 +4,13 @@
     <?php $helper_pkg_prefix = '';?>
 @endif
 
+
+
+<script type="text/javascript">
+    var base_url = '{{url('')}}';
+</script>
+<script src="{{ URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
+
 <script data-require="underscore.js@*" data-semver="1.5.1" src="https://underscorejs.org/underscore-min.js"></script>
 <script type="text/javascript" src="{{URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/ng-shortcut.js?v=2')}}"></script>
 
@@ -19,4 +26,9 @@ function showErrorNoty(res){
         custom_noty('error', errors);
     }
 }
+</script>
+
+<!-- CSRF TOKEN SETUP FOR AJAX CALLS -->
+<script type="text/javascript">
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'}});
 </script>
