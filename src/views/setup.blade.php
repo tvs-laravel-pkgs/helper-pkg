@@ -37,7 +37,7 @@
     }
 
     function url(url){
-        return base_url+url;
+        return base_url+'/'+url;
     }
 
     var laravel_routes = [];
