@@ -15,7 +15,7 @@
 <script type="text/javascript" src="{{URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/ng-shortcut.js?v=2')}}"></script>
 
 <script type="text/javascript">
-    function showCheckAllTabNoty(){
+    function showCheckAllTabErrorNoty(){
         custom_noty('error', 'You have errors, Please check all tabs')
     }
 
