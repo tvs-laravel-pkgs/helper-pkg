@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngSanitize', 'ui.select', 'ngRoute', 'ngMaterial', 'ngMessages', 'daterangepicker'], function($interpolateProvider) {
+var app = angular.module('app', ['ngSanitize', 'ui.select', 'ngRoute', 'ngMaterial', 'ngMessages', 'daterangepicker', 'moment-picker', ], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
 });
@@ -24,6 +24,16 @@ app.directive('fileModel', ['$parse', function($parse) {
             });
         }
     };
+}]);
+
+/* <!-- Angular Moment Picker JS (timepicker JS) --> */
+app.config(['momentPickerProvider', function(momentPickerProvider) {
+    momentPickerProvider.options({
+        /* hoursFormat: 'hh:mm', */
+        today: false,
+        locale: 'en',
+        /* format: 'LT' */
+    });
 }]);
 
 app.factory("HelperService", function($http) {
