@@ -7,7 +7,12 @@
 
 
 <script type="text/javascript">
-    var base_url = '{{url('')}}';
+    if(typeof(base_url) == 'undefined'){
+        var base_url = '{{url('')}}';
+    }
+    @if(isset($theme))
+    var theme_url = '{{url('public/themes/'.$theme.'/')}}';
+    @endif
 </script>
 <script src="{{ URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
 
@@ -37,7 +42,11 @@
     }
 
     function url(url){
-        return base_url+'/'+url;
+        if(base_url.charAt(base_url.length) == '/'){
+            return base_url+url;
+        }else{
+            return base_url+'/'+url;
+        }
     }
 
     var laravel_routes = [];
