@@ -5,13 +5,12 @@
 @endif
 
 
-
 <script type="text/javascript">
     if(typeof(base_url) == 'undefined'){
         var base_url = '{{url('')}}';
     }
     @if(isset($theme))
-    var theme_url = '{{url('public/themes/'.$theme.'/')}}';
+        var theme_url = '{{url('public/themes/'.$theme.'/')}}';
     @endif
 </script>
 <script src="{{ URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
