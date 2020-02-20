@@ -1,9 +1,8 @@
-@if(config('custom.PKG_DEV'))
+@if(config('helper-pkg.DEV'))
     <?php $helper_pkg_prefix = '/packages/abs/helper-pkg/src';?>
 @else
     <?php $helper_pkg_prefix = '';?>
 @endif
-
 
 <script type="text/javascript">
     if(typeof(base_url) == 'undefined'){
