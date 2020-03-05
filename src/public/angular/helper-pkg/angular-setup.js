@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngCookies', 'ngSanitize', 'ui.select', 'ngRoute', 'ngMaterial', 'ngMessages', 'daterangepicker', 'moment-picker', ], function($interpolateProvider) {
+var app = angular.module('app', ['ngCookies', 'ngSanitize', 'ui.select', 'ngRoute', 'ngMaterial', 'ngMessages', 'daterangepicker', 'moment-picker'], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
 });
