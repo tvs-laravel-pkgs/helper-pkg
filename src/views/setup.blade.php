@@ -10,8 +10,10 @@
     }
     @if(isset($theme))
         var theme_url = '{{url('public/themes/'.$theme.'/')}}';
+        var theme = '{{url('public/themes/'.$theme.'/')}}';
     @else
         var theme_url = '';
+        var theme = '';
     @endif
 </script>
 <script src="{{ URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>

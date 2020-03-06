@@ -157,6 +157,7 @@ app.filter('propsFilter', function() {
 });
 app.run(function($rootScope, $location) {
     $rootScope.theme_url = theme_url;
+    $rootScope.theme = theme_url;
 
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         $rootScope.loading = true;
@@ -184,6 +185,5 @@ app.run(function($rootScope, $location) {
         $('.initial-focus').focus();
         $rootScope.title = current.$$route.title;
         $('#modal-loading').modal('hide');
-        // console.log($rootScope.loading);
     });
 });
