@@ -97,7 +97,6 @@ app.config(['$routeProvider', function($routeProvider) {
     when('/page-not-found', {
         template: '<div class="text-center h1 alert alert-danger">Page Not Found!!!</div>'
     }).
-
     otherwise('/page-not-found');
 }]);
 

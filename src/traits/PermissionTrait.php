@@ -28,8 +28,9 @@ trait PermissionTrait {
 			$permission = self::firstOrNew([
 				'name' => $data['name'],
 			]);
+			// $permission->fill()
 			$permission->parent_id = $parent_id;
-			// $permission->display_order = $data['display_order'];
+			$permission->display_order = $data['display_order'];
 			$permission->display_name = $data['display_name'];
 			$permission->save();
 		}
