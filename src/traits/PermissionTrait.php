@@ -19,8 +19,8 @@ trait PermissionTrait {
 			if ($data['parent']) {
 				$parent = self::where('name', $data['parent'])->first();
 				if (!$parent) {
-					dump('Parent permission not found : ', $data['parent']);
-					dump($data);
+					// dump('Parent permission not found : ', $data['parent']);
+					// dump($data);
 					continue;
 				}
 				$parent_id = $parent->id;
