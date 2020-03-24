@@ -13,6 +13,7 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-cookies.min.js"></script>
 
 <!-- Angular Moment Picker -->
+<script src="{{ URL::asset('public/vendor/moment.js')}}"></script>
 <script src="{{ URL::asset('public/vendor/angular-moment-picker/angular-moment-picker.js')}}"></script>
 
 <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.js"></script>
