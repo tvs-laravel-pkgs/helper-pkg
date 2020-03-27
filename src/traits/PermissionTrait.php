@@ -16,14 +16,16 @@ trait PermissionTrait {
 			}
 
 			$parent_id = null;
+
 			if ($data['parent']) {
 				$parent = self::where('name', $data['parent'])->first();
 				if (!$parent) {
 					// dump('Parent permission not found : ', $data['parent']);
 					// dump($data);
-					continue;
+					$parent_id = null;
+				} else {
+					$parent_id = $parent->id;
 				}
-				$parent_id = $parent->id;
 			}
 			$permission = self::firstOrNew([
 				'name' => $data['name'],
