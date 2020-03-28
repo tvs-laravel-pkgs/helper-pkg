@@ -1,6 +1,6 @@
 <?php
 namespace Abs\HelperPkg\Traits;
-
+use Auth;
 trait SeederTrait {
 	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command) {
 		$bar = $command->getOutput()->createProgressBar(count($records));
@@ -48,4 +48,7 @@ trait SeederTrait {
 		}
 	}
 
+	public function scopeCompany($query) {
+		return $query->where('company_id', Auth::user()->company_id);
+	}
 }
