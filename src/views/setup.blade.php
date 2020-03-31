@@ -16,7 +16,7 @@
         var theme = '';
     @endif
 </script>
-<script src="{{ URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
+<script src="{{ asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
 
 <script data-require="underscore.js@*" data-semver="1.5.1" src="https://underscorejs.org/underscore-min.js"></script>
 <script type="text/javascript" src="{{URL::asset($helper_pkg_prefix.'/public/angular/helper-pkg/ng-shortcut.js?v=2')}}"></script>
