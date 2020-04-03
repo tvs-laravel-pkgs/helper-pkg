@@ -19,6 +19,6 @@ class ThemeDemoController extends Controller {
 	 * @return \Illuminate\Contracts\Support\Renderable
 	 */
 	public function home() {
-		return view('helper-pkg::theme-demo', $this->data);
+		return view($this->data['theme'] . '-pkg::demo/authed-angular-page', $this->data);
 	}
 }
