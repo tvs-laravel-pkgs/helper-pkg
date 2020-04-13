@@ -41,6 +41,21 @@ app.factory("HelperService", function($http) {
         hasPermission: function(permission) {
             return logged_user_permissions.indexOf(permission) != -1;
         },
+        getCurrentDate: function() {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            current_date = dd + '-' + mm + '-' + yyyy;
+            return current_date;
+        },
     }
 });
 
@@ -82,14 +97,6 @@ app.config(['$routeProvider', function($routeProvider) {
     //     template: '<order-list></order-list>',
     //     title: 'Orders',
     // }).
-    // when('/order/list', {
-    //     template: '<order-list></order-list>',
-    //     title: 'Orders',
-    // }).
-    // when('/order/view/:order_id', {
-    //     template: '<order-view></order-view>',
-    //     title: 'View Order',
-    // }).
     //OTHER PAGES
     when('/permission-denied', {
         template: '<div class="text-center h1 alert alert-danger">Permission Denied!!!</div>'
@@ -97,7 +104,7 @@ app.config(['$routeProvider', function($routeProvider) {
     when('/page-not-found', {
         template: '<div class="text-center h1 alert alert-danger">Page Not Found!!!</div>'
     }).
-    otherwise('/page-not-found');
+    otherwise('/');
 }]);
 
 app.directive("themeHeader", function() {
