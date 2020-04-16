@@ -15,6 +15,10 @@
         var theme_url = '';
         var theme = '';
     @endif
+
+    @if(Auth::user())
+        var user_id = {{Auth::id()}};
+    @endif
 </script>
 <script src="{{ asset($helper_pkg_prefix.'/public/angular/helper-pkg/angular-setup.js')}}"></script>
 
