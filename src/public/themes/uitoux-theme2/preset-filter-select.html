@@ -1,6 +1,9 @@
 <div class="page-header-content button-block">
     <div class="form-group">
-        <ui-select focus-on='focus-filter-preset' ng-model="$ctrl.filter_id" theme="select2" on-select="fetchData()">
+        <md-tooltip md-direction="top">
+            Selected Preset Filter
+        </md-tooltip>
+        <ui-select focus-on='focus-filter-preset' ng-model="$ctrl.extras.filter_id" theme="select2" on-select="fetchData()">
             <ui-select-match placeholder="Select Filter Preset">
                 {{$select.selected.name || $select.selected}}
             </ui-select-match>
@@ -8,6 +11,6 @@
                 <div ng-bind-html="i.name | highlight: $select.search"></div>
             </ui-select-choices>
         </ui-select>
-        <input type="hidden" name="filter_id" value="{{$ctrl.filter_id}}">
+        <input type="hidden" name="filter_id" value="{{$ctrl.extras.filter_id}}">
     </div><!-- Field -->
 </div>

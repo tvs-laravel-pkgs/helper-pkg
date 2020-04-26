@@ -161,6 +161,7 @@ app.filter('propsFilter', function() {
         return out;
     };
 });
+
 app.run(function($rootScope, $location) {
     $rootScope.theme_url = theme_url;
     $rootScope.theme = theme_url;

@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-md-4">
+        <div>
+            <md-tooltip md-direction="top">
+                Save as Preset Filter
+            </md-tooltip>
+            <md-switch ng-model="show_preset_filter_form" class="md-warn">
+            </md-switch>
+        </div><!-- Field -->
+    </div><!-- Column -->
+</div>
+<div class="row" ng-show="show_preset_filter_form">
+    <hr />
+    <form id="new-preset-form">
+        <input type="hidden" name="page_id" value="{{page_id}}">
+        <input type="hidden" name="value" id="filter_value" value="{{angular.toJson($ctrl.filter)}}">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Filter Preset Name</label>
+                <input type="text" class="form-control" name="name" autocomplete="off">
+            </div><!-- Field -->
+        </div><!-- Column -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <div>
+                    <md-tooltip md-direction="top">
+                        Make as my default filter
+                    </md-tooltip>
+                    <md-switch ng-model="is_default" class="md-warn">
+                    </md-switch>
+                </div><!-- Field -->
+                <input type="hidden" name="is_default" value="{{is_default}}">
+            </div><!-- Field -->
+        </div><!-- Column -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <div>
+                    <md-tooltip md-direction="top">
+                        Make as page default filter
+                    </md-tooltip>
+                    <md-switch ng-model="is_page_default" class="md-warn">
+                    </md-switch>
+                </div><!-- Field -->
+                <input type="hidden" name="is_page_default" value="{{is_page_default}}">
+            </div><!-- Field -->
+        </div><!-- Column -->
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-rose" ng-click="saveFilter()">
+                Save Filter Preset
+            </button>
+        </div>
+    </form>
+</div>

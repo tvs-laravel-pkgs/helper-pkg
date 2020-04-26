@@ -56,3 +56,13 @@ app.directive('deleteConfirmModal', function() {
         }
     }
 });
+
+app.directive('presetFilterForm', function() {
+    return {
+        templateUrl: preset_filter_form_template_url,
+        controller: function() {
+            var self = this;
+            self.theme = theme;
+        }
+    }
+});
