@@ -8,15 +8,26 @@ function showServerErrorNoty() {
 
 
 function showErrorNoty(res) {
-    custom_noty('error', res.error);
+    if (res.error) {
+        showNoty('error', res.error);
+    }
 
     var errors = '';
     for (var i in res.errors) {
         errors += '<li>' + res.errors[i] + '</li>';
     }
     if (errors) {
-        custom_noty('error', errors);
+
+        showNoty('error', errors);
     }
+}
+
+function showNoty(type, text) {
+    $noty = new Noty({
+        type: type,
+        layout: 'topRight',
+        text: text,
+    }).show();
 }
 
 function url(url) {

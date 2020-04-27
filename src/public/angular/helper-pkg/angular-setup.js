@@ -36,7 +36,7 @@ app.config(['momentPickerProvider', function(momentPickerProvider) {
     });
 }]);
 
-app.factory("HelperService", function($http) {
+app.factory("HelperService", function($http, $cookies) {
     return {
         hasPermission: function(permission) {
             return logged_user_permissions.indexOf(permission) != -1;
@@ -56,6 +56,9 @@ app.factory("HelperService", function($http) {
             current_date = dd + '-' + mm + '-' + yyyy;
             return current_date;
         },
+        isLoggedIn: function() {
+            console.log($cookies.get('user'));
+        }
     }
 });
 
