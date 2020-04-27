@@ -57,7 +57,11 @@ app.factory("HelperService", function($http, $cookies) {
             return current_date;
         },
         isLoggedIn: function() {
-            console.log($cookies.get('user'));
+            if (typeof($cookies.get('user')) == 'undefined') {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 });
