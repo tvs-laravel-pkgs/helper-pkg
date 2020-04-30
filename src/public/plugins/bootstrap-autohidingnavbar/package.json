@@ -1,0 +1,35 @@
+{
+  "name": "bootstrap-autohidingnavbar",
+  "title": "Bootstrap Auto-Hiding Navbar",
+  "description": "An extension for Bootstrap's fixed navbar which hides the navbar while the page is scrolling downwards and shows it the other way. The plugin is able to show/hide the navbar programmatically as well.",
+  "author": {
+    "name": "István Ujj-Mészáros",
+    "url": "https://github.com/istvan-ujjmeszaros"
+  },
+  "main": "dist/jquery.bootstrap-autohidingnavbar.js",
+  "license": "Apache-2.0",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/istvan-ujjmeszaros/bootstrap-autohidingnavbar.git"
+  },
+  "homepage": "https://www.virtuosoft.eu/code/bootstrap-autohidingnavbar/",
+  "version": "4.0.0",
+  "devDependencies": {
+    "grunt": "^1.0.2",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-cssmin": "^2.2.1"
+  },
+  "scripts": {
+    "test": "grunt travis --verbose"
+  },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
+}
