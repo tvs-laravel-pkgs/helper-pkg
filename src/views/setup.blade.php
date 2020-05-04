@@ -20,6 +20,8 @@
         var user_id = {{Auth::id()}};
     @endif
 
+
+    <?php $theme = config('custom.theme')?>
     var preset_filter_select_template_url = "{{asset($helper_pkg_prefix.'/public/themes/'.$theme.'/preset-filter-select.html')}}";
     var filter_btn_template_url = "{{asset($helper_pkg_prefix.'/public/themes/'.$theme.'/filter-btn.html')}}";
     var delete_confirm_modal_template_url = "{{asset($helper_pkg_prefix.'/public/themes/'.$theme.'/delete-confirm-modal.html')}}";
