@@ -57,12 +57,21 @@ app.factory("HelperService", function($http, $cookies) {
             return current_date;
         },
         isLoggedIn: function() {
-            if (typeof($cookies.get('user')) == 'undefined') {
+            var user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
                 return false;
             } else {
                 return true;
             }
-        }
+        },
+        hasPerm: function(permission) {
+            var user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                return false;
+            }
+            return user.permissions.indexOf(permission) != -1;
+        },
+
     }
 });
 
@@ -180,7 +189,6 @@ app.run(function($rootScope, $location) {
             keyboard: true
         });
 
-        console.log($rootScope.loading);
         var permission_required_for_url = $.grep(page_permissions, function(obj) {
             if (obj.url === $location.path()) {
                 return obj;
