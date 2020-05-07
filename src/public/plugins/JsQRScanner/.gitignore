@@ -1,0 +1,11 @@
+.settings/
+*.class
+war/WEB-INF/classes/
+war/WEB-INF/lib/
+gwt-unitCache/
+war/jsqrscanner/
+war/WEB-INF/deploy/
+/.gwt/.gwt-log
+/war/jsPretty/jsqrscanner.devmode.js
+/war/js/jsqrscanner.devmode.js
+/target/

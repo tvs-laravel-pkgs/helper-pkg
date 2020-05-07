@@ -11,6 +11,9 @@ function showErrorNoty(res) {
     if (res.error) {
         showNoty('error', res.error);
     }
+    if (res.message) {
+        showNoty('error', res.message);
+    }
 
     var errors = '';
     for (var i in res.errors) {

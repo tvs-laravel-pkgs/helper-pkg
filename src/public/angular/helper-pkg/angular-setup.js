@@ -71,6 +71,10 @@ app.factory("HelperService", function($http, $cookies) {
             }
             return user.permissions.indexOf(permission) != -1;
         },
+        getLoggedUser: function() {
+            return JSON.parse(localStorage.getItem('user'));
+        },
+
 
     }
 });
