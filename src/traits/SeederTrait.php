@@ -51,4 +51,18 @@ trait SeederTrait {
 	public function scopeCompany($query) {
 		return $query->where('company_id', Auth::user()->company_id);
 	}
+
+	public static function getList($params = [], $add_default = true, $default_text = 'Select') {
+		$list = Collect(Self::select([
+			'id',
+			'name',
+		])
+				->orderBy('name')
+				->get());
+		if ($add_default) {
+			$list->prepend(['id' => '', 'name' => $default_text]);
+		}
+		return $list;
+	}
+
 }
