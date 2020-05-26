@@ -47,5 +47,5 @@
 
 <!-- CSRF TOKEN SETUP FOR AJAX CALLS -->
 <script type="text/javascript">
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'}});
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': '{{csrf_token()}}' } });
 </script>

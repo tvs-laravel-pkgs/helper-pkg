@@ -59,7 +59,9 @@ app.factory("HelperService", function($http, $cookies) {
         isLoggedIn: function() {
             var user = JSON.parse(localStorage.getItem('user'));
             if (!user) {
-                return false;
+                window.location = base_url + '/logout';
+                return;
+                // return false;
             } else {
                 return true;
             }

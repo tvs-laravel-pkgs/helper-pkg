@@ -8,6 +8,8 @@ function showServerErrorNoty() {
 
 
 function showErrorNoty(res) {
+
+    console.log(res);
     if (res.error) {
         showNoty('error', res.error);
     }
@@ -77,6 +79,15 @@ app.directive('presetFilterForm', function() {
         controller: function() {
             var self = this;
             self.theme = theme;
+        }
+    }
+});
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        var user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + user.token);
         }
     }
 });
