@@ -48,8 +48,13 @@ trait SeederTrait {
 		}
 	}
 
-	public function scopeCompany($query) {
-		return $query->where('company_id', Auth::user()->company_id);
+	public function scopeCompany($query, $table_name = null) {
+		if ($table_name) {
+			$table_name .= '.';
+		} else {
+			$table_name = '';
+		}
+		return $query->where($table_name . 'company_id', Auth::user()->company_id);
 	}
 
 	public static function getList($params = [], $add_default = true, $default_text = 'Select') {
