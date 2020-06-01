@@ -18,9 +18,13 @@ function showErrorNoty(res) {
     }
 
     var errors = '';
-    for (var i in res.errors) {
-        errors += '<li>' + res.errors[i] + '</li>';
-    }
+    // for (var i in res.errors) {
+    //     errors += '<li>' + res.errors[i] + '</li>';
+    // }
+    angular.forEach(res.errors, function(error, key){
+        errors += '<li>' + error + '</li>';
+    });
+
     if (errors) {
 
         showNoty('error', errors);
