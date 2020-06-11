@@ -21,7 +21,7 @@ function showErrorNoty(res) {
     // for (var i in res.errors) {
     //     errors += '<li>' + res.errors[i] + '</li>';
     // }
-    angular.forEach(res.errors, function(error, key){
+    angular.forEach(res.errors, function(error, key) {
         errors += '<li>' + error + '</li>';
     });
 
@@ -36,6 +36,7 @@ function showNoty(type, text) {
         type: type,
         layout: 'topRight',
         text: text,
+        timeout: 3000,
     }).show();
 }
 
