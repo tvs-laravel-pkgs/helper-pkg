@@ -1,4 +1,13 @@
-var app = angular.module('app', ['ngCookies', 'ngSanitize', 'ui.select', 'ngRoute', 'ngMaterial', 'ngMessages', 'daterangepicker', 'moment-picker'], function($interpolateProvider) {
+var app = angular.module('app', [
+    'ngCookies', 
+    'ngSanitize', 
+    'ui.select',
+    'ngRoute', 
+    'ngMaterial', 
+    'ngMessages', 
+    'daterangepicker', 
+    'moment-picker'
+], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
 });
@@ -114,11 +123,6 @@ app.config(['$routeProvider', function($routeProvider) {
     // });
     $routeProvider.
 
-    // //ORDER
-    // when('/', {
-    //     template: '<order-list></order-list>',
-    //     title: 'Orders',
-    // }).
     //OTHER PAGES
     when('/permission-denied', {
         template: '<div class="text-center h1 alert alert-danger">Permission Denied!!!</div>'

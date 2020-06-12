@@ -2,15 +2,12 @@
 namespace Abs\HelperPkg\Traits;
 use Auth;
 trait SeederTrait {
-	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command) {
-		$bar = $command->getOutput()->createProgressBar(count($records));
-		$bar->start();
-		$command->getOutput()->writeln(1);
+	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command = null) {
 
 		$success = 0;
+		$error_records = [];
 		foreach ($records as $key => $record_data) {
 			try {
-				$bar->advance(1);
 				if (!$record_data->company_code) {
 					continue;
 				}
@@ -27,14 +24,19 @@ trait SeederTrait {
 					}
 				}
 
-				$record = self::createFromObject($record_data, $company);
+				$status = self::createFromObject($record_data, $company);
+				if (!$status['success']) {
+					$error_records[] = array_merge($record_data->toArray(), [
+						'Record No' => $key + 1,
+						'Errors' => implode(',', $status['errors']),
+					]);
+				}
 				$success++;
 			} catch (Exception $e) {
 				dd($e);
 			}
 		}
-		$bar->finish();
-		$command->getOutput()->writeln(1);
+		return $error_records;
 		dump($success . ' Records Processed');
 	}
 
