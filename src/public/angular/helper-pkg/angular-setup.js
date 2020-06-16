@@ -16,6 +16,115 @@ var app = angular.module('app', [
 //     // $locationProvider.html5Mode(true);
 // })
 
+angular.module('app').factory('RequestSvc', [
+    '$http', 
+    '$rootScope', 
+    '$log', 
+    '$window', 
+    '$q', 
+    'HelperService', 
+    function (
+        $http,
+        $rootScope,
+        $log,
+        $window,
+        $q,
+        HelperService
+        ) {
+
+    // let apiPath = $window.api_url;
+    let apiPath = base_url;
+
+
+    function appendTransform(defaults, transform) {
+        // We can't guarantee that the default transformation is an array
+        defaults = angular.isArray(defaults) ? defaults : [defaults];
+
+        // Append the new transformation to the defaults
+        return defaults.concat(transform);
+    }
+
+    return {
+        get: function (url, params, transformResponse) {
+            // does not accept unformatted momentjs objects
+            // could potentially add an alternative get method or an option to not use $.param
+            var query = $.param(angular.extend({}, params));
+
+            var deferred = $q.defer();
+            let canceller = $q.defer();
+            url = apiPath + url + '?' + query;
+            transformResponse = transformResponse || function (value) {
+                return value;
+            };
+            $http({
+                url: url,
+                method: 'GET',
+                headers: {
+                    Authorization: HelperService.isLoggedIn() ? 'Bearer '+HelperService.getLoggedUser().token : null,
+                },
+                transformResponse: appendTransform($http.defaults.transformResponse, function (value) {
+                    return transformResponse(value);
+                }),
+                timeout: canceller.promise,
+            })
+                .then(function (response) {
+                    if (response.status === -1) {
+                        // timed out or cancelled
+                        deferred.reject();
+                        return;
+                    }
+                    if (response.data.success) {
+                        $rootScope.$broadcast('onResetIdleTimeout');
+                        deferred.resolve(response);
+                    }
+                    else {
+                        deferred.reject(response.data.errors);
+                    }
+                }, function (error) {
+                    deferred.reject('A generic API error occured: ' + error.data.error.message);
+                });
+
+            deferred.promise.cancel = () => {
+                canceller.resolve();
+            };
+
+            return deferred.promise;
+        },
+        post: function (url, data, transformResponse) {
+            var deferred = $q.defer();
+            transformResponse = transformResponse || function (value) {
+                return value;
+            };
+            $http({
+                url: apiPath + url,
+                method: 'POST',
+                data: data,
+                headers: {
+                    Authorization: HelperService.isLoggedIn() ? HelperService.getLoggedUser().token : null,
+                    // Authorization: angular.isObject($localStorage.authToken) ? $localStorage.authToken.token : null,
+                },
+                transformResponse: appendTransform($http.defaults.transformResponse, function (value) {
+                    return transformResponse(value);
+                })
+            })
+                .then(function (response) {
+                    if (response.data.success) {
+                        $rootScope.$broadcast('onResetIdleTimeout');
+                        deferred.resolve(response);
+                    }
+                    else {
+                        deferred.reject(response.data.errors);
+                    }
+                }, function (error) {
+                    deferred.reject('A generic API error occured: ' + error.data.error.message);
+                });
+
+            return deferred.promise;
+        }
+    };
+
+}]);
+
 var page_permissions = [];
 var angular_routes = [];
 
