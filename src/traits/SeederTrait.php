@@ -4,11 +4,11 @@ use App\Company;
 use Auth;
 trait SeederTrait {
 	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command = null) {
-
 		$success = 0;
 		$error_records = [];
 		foreach ($records as $key => $record_data) {
 			try {
+				// dd($record_data);
 				if (!$record_data->company_code) {
 					continue;
 				}
@@ -24,8 +24,7 @@ trait SeederTrait {
 						continue;
 					}
 				}
-
-				$status = self::saveFromObject($record_data, $company);
+				$status = static::saveFromObject($record_data, $company);
 				if (!$status['success']) {
 					$error_records[] = array_merge($record_data->toArray(), [
 						'Record No' => $key + 1,
@@ -34,16 +33,18 @@ trait SeederTrait {
 				}
 				$success++;
 			} catch (Exception $e) {
-				dd($e);
+				dump($e);
 			}
 		}
-		return $error_records;
 		dump($success . ' Records Processed');
+		dump(count($error_records) . ' Errors');
+		dump($error_records);
+		return $error_records;
 	}
 
 	public static function createMultipleFromArrays($records) {
 		foreach ($records as $id => $detail) {
-			$record = self::firstOrNew([
+			$record = static::firstOrNew([
 				'id' => $id,
 			]);
 			$record->fill($detail['data']);
@@ -61,7 +62,7 @@ trait SeederTrait {
 	}
 
 	public static function getList($params = [], $add_default = true, $default_text = 'Select') {
-		$list = Collect(Self::select([
+		$list = Collect(static::select([
 			'id',
 			'name',
 		])
@@ -135,7 +136,7 @@ trait SeederTrait {
 				];
 			}
 
-			$record = Self::firstOrNew([
+			$record = static::firstOrNew([
 				'company_id' => $company->id,
 				'code' => $record_data['Code'],
 			]);
@@ -219,4 +220,90 @@ trait SeederTrait {
 		];
 		return self::saveFromExcelArray($record);
 	}
+
+	public static function validateAndFillExcelColumns($values, $excelColumns, $object) {
+		$errors = [];
+		foreach ($excelColumns as $columnName => $details) {
+			foreach ($details['rules'] as $rule => $ruleDetails) {
+				switch ($rule) {
+				case 'required':
+					if (empty($values[$columnName])) {
+						$errors[] = $columnName . ' is empty';
+						continue;
+					}
+					$value = $values[$columnName];
+					break;
+
+				case 'fk':
+					if (!empty($values[$columnName])) {
+						$fk = $ruleDetails['class']::where([
+							$ruleDetails['foreign_table_column'] => $values[$columnName],
+						])->first();
+						if (!$fk) {
+							$errors[] = 'Invalid ' . $columnName . ' : ' . $values[$columnName];
+							continue;
+						}
+						$value = $fk->id;
+					}
+					break;
+
+				case 'nullable':
+					if (!empty($values[$columnName])) {
+						$value = $values[$columnName];
+					} else {
+						$value = null;
+					}
+					break;
+
+				case 'email':
+					if (!empty($values[$columnName])) {
+						$value = $values[$columnName];
+					}
+					break;
+
+				case 'mobile_number':
+					if (!empty($values[$columnName]) && strlen($values[$columnName]) != 10) {
+						$errors[] = $columnName . ' Length should be 10' . ' : ' . $values[$columnName];
+						continue;
+					} else {
+						$value = $values[$columnName];
+					}
+					break;
+
+				case 'boolean':
+					if ($values[$columnName] == 'Yes') {
+						$value = 1;
+					} else {
+						$value = 0;
+					}
+					break;
+
+				case 'date':
+					if (!empty($values[$columnName])) {
+						$value = date('Y-m-d', strtotime($values[$columnName]));
+					}
+					break;
+				}
+				if (isset($details['table_column_name'])) {
+					$object->{$details['table_column_name']} = $value;
+				} else {
+					$column = snake_case($columnName);
+					$object->{$column} = $value;
+				}
+				$value = null;
+			}
+		}
+
+		if (count($errors) > 0) {
+			return [
+				'success' => false,
+				'errors' => $errors,
+			];
+		}
+		return [
+			'success' => true,
+			'record' => $object,
+		];
+	}
+
 }
