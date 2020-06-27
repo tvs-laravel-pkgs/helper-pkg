@@ -39,14 +39,6 @@ trait SeederTrait {
 				$created_by_id = $record_data['created_by_id'];
 			}
 
-			if (empty($record_data['Code'])) {
-				$errors[] = 'Code is empty';
-			}
-
-			if (empty($record_data['Name'])) {
-				$errors[] = 'Name is empty';
-			}
-
 			if (count($errors) > 0) {
 				return [
 					'success' => false,
@@ -58,8 +50,10 @@ trait SeederTrait {
 				'company_id' => $company->id,
 				'code' => $record_data['Code'],
 			]);
-
-			$record->name = $record_data['Name'];
+			$result = Self::validateAndFillExcelColumns($record_data, Static::$excelColumnRules, $record);
+			if (!$result['success']) {
+				return $result;
+			}
 			$record->created_by_id = $created_by_id;
 			$record->save();
 			return [
@@ -206,6 +200,7 @@ trait SeederTrait {
 		$errors = [];
 		foreach ($excelColumns as $columnName => $details) {
 			foreach ($details['rules'] as $rule => $ruleDetails) {
+				$value = null;
 				switch ($rule) {
 				case 'required':
 					if (empty($values[$columnName])) {
@@ -260,8 +255,39 @@ trait SeederTrait {
 					break;
 
 				case 'date':
+					$value = null;
 					if (!empty($values[$columnName])) {
 						$value = date('Y-m-d', strtotime($values[$columnName]));
+					}
+					break;
+
+				case 'unsigned_integer':
+					if (empty($values[$columnName])) {
+						continue;
+					}
+					$value = 0;
+					if (!is_numeric($values[$columnName])) {
+						$errors[] = $columnName . ' should be a integer number' . ' : ' . $values[$columnName];
+						continue;
+					}
+					if ($values[$columnName] < 0) {
+						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
+						continue;
+					}
+					break;
+
+				case 'unsigned_decimal':
+					if (empty($values[$columnName])) {
+						continue;
+					}
+					$value = 0;
+					if (!is_numeric($values[$columnName])) {
+						$errors[] = $columnName . ' should be a decimal number' . ' : ' . $values[$columnName];
+						continue;
+					}
+					if ($values[$columnName] < 0) {
+						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
+						continue;
 					}
 					break;
 				}
