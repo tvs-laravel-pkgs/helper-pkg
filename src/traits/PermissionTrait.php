@@ -36,6 +36,5 @@ trait PermissionTrait {
 			$permission->display_name = $data['display_name'];
 			$permission->save();
 		}
-
 	}
 }

@@ -1,89 +1,7 @@
 <?php
 namespace Abs\HelperPkg\Traits;
 use App\Company;
-use Auth;
 trait SeederTrait {
-	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command = null) {
-		$success = 0;
-		$error_records = [];
-		foreach ($records as $key => $record_data) {
-			try {
-				// dd($record_data);
-				if (!$record_data->company_code) {
-					continue;
-				}
-
-				if ($specific_company) {
-					if ($record_data->company_code != $specific_company->code) {
-						continue;
-					}
-				}
-
-				if ($tc) {
-					if ($record_data->tc != $tc) {
-						continue;
-					}
-				}
-				$status = static::saveFromObject($record_data, $company);
-				if (!$status['success']) {
-					$error_records[] = array_merge($record_data->toArray(), [
-						'Record No' => $key + 1,
-						'Errors' => implode(',', $status['errors']),
-					]);
-				}
-				$success++;
-			} catch (Exception $e) {
-				dump($e);
-			}
-		}
-		dump($success . ' Records Processed');
-		dump(count($error_records) . ' Errors');
-		dump($error_records);
-		return $error_records;
-	}
-
-	public static function createMultipleFromArrays($records) {
-		foreach ($records as $id => $detail) {
-			$record = static::firstOrNew([
-				'id' => $id,
-			]);
-			$record->fill($detail['data']);
-			$record->save();
-		}
-	}
-
-	public function scopeCompany($query, $table_name = null) {
-		if ($table_name) {
-			$table_name .= '.';
-		} else {
-			$table_name = '';
-		}
-		return $query->where($table_name . 'company_id', Auth::user()->company_id);
-	}
-
-	public static function getList($params = [], $add_default = true, $default_text = 'Select') {
-		$list = Collect(static::select([
-			'id',
-			'name',
-		])
-				->orderBy('name')
-				->get());
-		if ($add_default) {
-			$list->prepend(['id' => '', 'name' => $default_text]);
-		}
-		return $list;
-	}
-
-	// Query Scopes --------------------------------------------------------------
-
-	public function scopeFilterSearch($query, $term) {
-		if (strlen($term)) {
-			$query->where(function ($query) use ($term) {
-				$query->orWhere('code', 'LIKE', '%' . $term . '%');
-				$query->orWhere('name', 'LIKE', '%' . $term . '%');
-			});
-		}
-	}
 
 	// Static Operations --------------------------------------------------------------
 
@@ -155,6 +73,69 @@ trait SeederTrait {
 		}
 	}
 
+	public static function createFromCollection($records, $company = null, $specific_company = null, $tc, $command = null) {
+		$success = 0;
+		$error_records = [];
+		foreach ($records as $key => $record_data) {
+			try {
+				if (!$record_data->company_code) {
+					continue;
+				}
+
+				if ($specific_company) {
+					if ($record_data->company_code != $specific_company->code) {
+						continue;
+					}
+				}
+
+				if ($tc) {
+					if ($record_data->tc != $tc) {
+						continue;
+					}
+				}
+
+				$status = static::saveFromObject($record_data, $company);
+				if (!$status['success']) {
+					$error_records[] = array_merge($record_data->toArray(), [
+						'Record No' => $key + 1,
+						'Errors' => implode(',', $status['errors']),
+					]);
+					continue;
+				}
+				$success++;
+			} catch (Exception $e) {
+				dump($e);
+			}
+		}
+		dump($success . ' Records Processed');
+		dump(count($error_records) . ' Errors');
+		dump($error_records);
+		return $error_records;
+	}
+
+	public static function createMultipleFromArrays($records) {
+		foreach ($records as $id => $detail) {
+			$record = static::firstOrNew([
+				'id' => $id,
+			]);
+			$record->fill($detail['data']);
+			$record->save();
+		}
+	}
+
+	public static function getList($params = [], $add_default = true, $default_text = 'Select') {
+		$list = Collect(static::select([
+			'id',
+			'name',
+		])
+				->orderBy('name')
+				->get());
+		if ($add_default) {
+			$list->prepend(['id' => '', 'name' => $default_text]);
+		}
+		return $list;
+	}
+
 	public static function importFromJob($job) {
 
 		try {
@@ -221,7 +202,7 @@ trait SeederTrait {
 		return self::saveFromExcelArray($record);
 	}
 
-	public static function validateAndFillExcelColumns($values, $excelColumns, $object) {
+	public static function validateAndFillExcelColumns($values, $excelColumns, &$object) {
 		$errors = [];
 		foreach ($excelColumns as $columnName => $details) {
 			foreach ($details['rules'] as $rule => $ruleDetails) {
