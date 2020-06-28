@@ -1,21 +1,17 @@
 <?php
 namespace Abs\HelperPkg\Traits;
+use Abs\SerialNumberPkg\SerialNumberGroup;
 use App\Company;
+use DB;
+
 trait SeederTrait {
 
 	// Static Operations --------------------------------------------------------------
 
 	public static function saveFromExcelArray($record_data) {
 		try {
+			DB::beginTransaction();
 			$errors = [];
-
-			// $validation = Self::validate($original_record, $admin);
-			// if (count($validation['success']) > 0 || count($errors) > 0) {
-			// 	return [
-			// 		'success' => false,
-			// 		'errors' => array_merge($validation['errors'], $errors),
-			// 	];
-			// }
 
 			$company = Company::where('code', $record_data['Company Code'])->first();
 			if (!$company) {
@@ -46,23 +42,49 @@ trait SeederTrait {
 				];
 			}
 
-			$record = static::firstOrNew([
-				'company_id' => $company->id,
-				'code' => $record_data['Code'],
-			]);
+			if (Self::$AUTO_GENERATE_CODE) {
+				if (empty($record_data['Code'])) {
+					$record = static::firstOrNew([
+						'company_id' => $company->id,
+						'name' => $record_data['Name'],
+					]);
+					$result = SerialNumberGroup::generateNumber(static::$SERIAL_NUMBER_CATEGORY_ID);
+					if ($result['success']) {
+						$record_data['Code'] = $result['number'];
+					} else {
+						return [
+							'success' => false,
+							'errors' => $result['error'],
+						];
+					}
+				} else {
+					$record = static::firstOrNew([
+						'company_id' => $company->id,
+						'code' => $record_data['Code'],
+					]);
+				}
+			} else {
+				$record = static::firstOrNew([
+					'company_id' => $company->id,
+					'code' => $record_data['Code'],
+				]);
+			}
 			$result = Self::validateAndFillExcelColumns($record_data, Static::$excelColumnRules, $record);
 			if (!$result['success']) {
 				return $result;
 			}
 			$record->created_by_id = $created_by_id;
 			$record->save();
+			DB::commit();
 			return [
 				'success' => true,
 			];
+
 		} catch (\Exception $e) {
+			DB::rollback();
 			return [
 				'success' => false,
-				'errors' => [$e->getMessage()],
+				'errors' => [$e->getMessage() . '. Line:' . $e->getLine() . '. File:' . $e->getFile()],
 			];
 		}
 	}
@@ -203,7 +225,7 @@ trait SeederTrait {
 				$value = null;
 				switch ($rule) {
 				case 'required':
-					if (empty($values[$columnName])) {
+					if ($values[$columnName] === '') {
 						$errors[] = $columnName . ' is empty';
 						continue;
 					}
@@ -224,7 +246,7 @@ trait SeederTrait {
 					break;
 
 				case 'nullable':
-					if (!empty($values[$columnName])) {
+					if ($values[$columnName] !== '') {
 						$value = $values[$columnName];
 					} else {
 						$value = null;
@@ -262,9 +284,9 @@ trait SeederTrait {
 					break;
 
 				case 'unsigned_integer':
-					if (empty($values[$columnName])) {
-						continue;
-					}
+					// if ($values[$columnName] === '') {
+					// 	continue;
+					// }
 					$value = 0;
 					if (!is_numeric($values[$columnName])) {
 						$errors[] = $columnName . ' should be a integer number' . ' : ' . $values[$columnName];
@@ -274,10 +296,11 @@ trait SeederTrait {
 						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
 						continue;
 					}
+					$value = $values[$columnName];
 					break;
 
 				case 'unsigned_decimal':
-					if (empty($values[$columnName])) {
+					if ($values[$columnName] !== '') {
 						continue;
 					}
 					$value = 0;
@@ -289,10 +312,15 @@ trait SeederTrait {
 						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
 						continue;
 					}
+					$value = $values[$columnName];
 					break;
 				}
 				if (isset($details['table_column_name'])) {
 					$object->{$details['table_column_name']} = $value;
+					// if ($columnName == 'KM Reading') {
+					// 	dump($value);
+					// 	dd($object);
+					// }
 				} else {
 					$column = snake_case($columnName);
 					$object->{$column} = $value;
