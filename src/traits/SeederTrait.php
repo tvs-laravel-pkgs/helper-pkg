@@ -227,7 +227,7 @@ trait SeederTrait {
 				case 'required':
 					if ($values[$columnName] === '') {
 						$errors[] = $columnName . ' is empty';
-						continue;
+						break;
 					}
 					$value = $values[$columnName];
 					break;
@@ -239,7 +239,7 @@ trait SeederTrait {
 						])->first();
 						if (!$fk) {
 							$errors[] = 'Invalid ' . $columnName . ' : ' . $values[$columnName];
-							continue;
+							break;
 						}
 						$value = $fk->id;
 					}
@@ -262,7 +262,7 @@ trait SeederTrait {
 				case 'mobile_number':
 					if (!empty($values[$columnName]) && strlen($values[$columnName]) != 10) {
 						$errors[] = $columnName . ' Length should be 10' . ' : ' . $values[$columnName];
-						continue;
+						break;
 					} else {
 						$value = $values[$columnName];
 					}
@@ -290,27 +290,27 @@ trait SeederTrait {
 					$value = 0;
 					if (!is_numeric($values[$columnName])) {
 						$errors[] = $columnName . ' should be a integer number' . ' : ' . $values[$columnName];
-						continue;
+						break;
 					}
 					if ($values[$columnName] < 0) {
 						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
-						continue;
+						break;
 					}
 					$value = $values[$columnName];
 					break;
 
 				case 'unsigned_decimal':
 					if ($values[$columnName] !== '') {
-						continue;
+						break;
 					}
 					$value = 0;
 					if (!is_numeric($values[$columnName])) {
 						$errors[] = $columnName . ' should be a decimal number' . ' : ' . $values[$columnName];
-						continue;
+						break;
 					}
 					if ($values[$columnName] < 0) {
 						$errors[] = $columnName . ' should be greater than 0' . ' : ' . $values[$columnName];
-						continue;
+						break;
 					}
 					$value = $values[$columnName];
 					break;
