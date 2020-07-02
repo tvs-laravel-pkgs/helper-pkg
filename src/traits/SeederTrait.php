@@ -124,7 +124,7 @@ trait SeederTrait {
 				dump($e);
 			}
 		}
-		dump($success . ' Records Processed');
+		dump($success . ' Records Success');
 		dump(count($error_records) . ' Errors');
 		dump($error_records);
 		return $error_records;
