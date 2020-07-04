@@ -158,6 +158,43 @@ app.factory("HelperService", function($http, $cookies) {
         hasPermission: function(permission) {
             return logged_user_permissions.indexOf(permission) != -1;
         },
+        calculateTaxAndTotal: function(entity, is_same_state) {
+            entity.net_amount = parseFloat(entity.qty) * parseFloat(entity.rate);
+            entity.tax_total = 0;
+            entity.total_amount = 0;
+
+            entity.taxes = [];
+            if (entity.tax_code) {
+                if (is_same_state) {
+                    angular.forEach(entity.tax_code.taxes, function(tax) {
+                        if (tax.type_id == 1160) {
+                            tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
+                            entity.tax_total += tax.amount
+                            entity.taxes.push(tax);
+                        }
+                    });
+                } else {
+                    angular.forEach(entity.tax_code.taxes, function(tax) {
+                        if (tax.type_id == 1161) {
+                            tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
+                            entity.tax_total += tax.amount
+                            entity.taxes.push(tax);
+                        }
+                    });
+                }
+            }
+            entity.total_amount = parseFloat(entity.net_amount) + parseFloat(entity.tax_total);
+        },
+
+        calculateTotal: function(items) {
+            var total = 0;
+            angular.forEach(items, function(item) {
+                total += item.total_amount;
+            });
+            return total;
+        },
+
+
         getCurrentDate: function() {
             var today = new Date();
             var dd = today.getDate();
