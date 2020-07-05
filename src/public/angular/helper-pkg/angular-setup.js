@@ -168,6 +168,7 @@ app.factory("HelperService", function($http, $cookies) {
                 if (is_same_state) {
                     angular.forEach(entity.tax_code.taxes, function(tax) {
                         if (tax.type_id == 1160) {
+                            //Within State Taxes Only
                             tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
                             entity.tax_total += tax.amount
                             entity.taxes.push(tax);
@@ -176,6 +177,7 @@ app.factory("HelperService", function($http, $cookies) {
                 } else {
                     angular.forEach(entity.tax_code.taxes, function(tax) {
                         if (tax.type_id == 1161) {
+                            //Inter State Taxes Only
                             tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
                             entity.tax_total += tax.amount
                             entity.taxes.push(tax);
@@ -184,12 +186,13 @@ app.factory("HelperService", function($http, $cookies) {
                 }
             }
             entity.total_amount = parseFloat(entity.net_amount) + parseFloat(entity.tax_total);
+
         },
 
         calculateTotal: function(items) {
             var total = 0;
             angular.forEach(items, function(item) {
-                total += item.total_amount;
+                total += parseFloat(item.total_amount);
             });
             return total;
         },
