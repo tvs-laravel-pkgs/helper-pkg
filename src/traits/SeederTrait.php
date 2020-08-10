@@ -112,7 +112,6 @@ trait SeederTrait {
 
 				$status = static::saveFromObject($record_data, $company);
 				if (!$status['success']) {
-					// dump($status);
 					$error_records[] = array_merge($record_data->toArray(), [
 						'Record No' => $key + 1,
 						'Errors' => implode(',', $status['errors']),
