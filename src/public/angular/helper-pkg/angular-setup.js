@@ -170,7 +170,7 @@ app.factory("HelperService", function($http, $cookies) {
                         if (tax.type_id == 1160) {
                             //Within State Taxes Only
                             tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
-                            entity.tax_total += tax.amount
+                            entity.tax_total += tax.amount;
                             entity.taxes.push(tax);
                         }
                     });
@@ -179,7 +179,7 @@ app.factory("HelperService", function($http, $cookies) {
                         if (tax.type_id == 1161) {
                             //Inter State Taxes Only
                             tax.pivot.amount = tax.amount = parseFloat(entity.net_amount) * parseFloat(tax.pivot.percentage) / 100;
-                            entity.tax_total += tax.amount
+                            entity.tax_total += tax.amount;
                             entity.taxes.push(tax);
                         }
                     });
