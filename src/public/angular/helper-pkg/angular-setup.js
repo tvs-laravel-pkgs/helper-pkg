@@ -158,7 +158,7 @@ app.factory("HelperService", function($http, $cookies) {
         hasPermission: function(permission) {
             return logged_user_permissions.indexOf(permission) != -1;
         },
-        calculateTaxAndTotal: function(entity, is_same_state) {
+        calculateTaxAndTotal: function(entity, is_same_state, handling = null) {
             entity.net_amount = parseFloat(entity.qty) * parseFloat(entity.rate);
             entity.tax_total = 0;
             entity.total_amount = 0;
@@ -166,6 +166,7 @@ app.factory("HelperService", function($http, $cookies) {
             entity.taxes = [];
             if (entity.tax_code) {
                 if (is_same_state) {
+                    console.log(is_same_state);
                     angular.forEach(entity.tax_code.taxes, function(tax) {
                         if (tax.type_id == 1160) {
                             //Within State Taxes Only
@@ -186,6 +187,9 @@ app.factory("HelperService", function($http, $cookies) {
                 }
             }
             entity.total_amount = parseFloat(entity.net_amount) + parseFloat(entity.tax_total);
+            if (handling != null) {
+                entity.total_amount = entity.total_amount + parseFloat(entity.handling_charge);
+            }
 
         },
 
