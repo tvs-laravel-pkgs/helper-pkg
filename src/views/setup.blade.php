@@ -49,3 +49,25 @@
 <script type="text/javascript">
     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': '{{csrf_token()}}' } });
 </script>
+
+@if(Session::has('success'))
+    @if(Session::get('success'))
+        <script type="text/javascript">
+            $(document).ready(function(){
+                custom_noty('success','<?php echo Session::get('message') ?>')
+            })
+        </script>
+    @else
+        <script type="text/javascript">
+            $(document).ready(function(){
+                custom_noty('error','<?php echo Session::get('error') ?>')
+
+                @if(Session::has('errors'))
+                @foreach(Session::get('errors') as $error)
+                custom_noty('error','{{$error}}')
+                @endforeach
+                @endif
+            })
+        </script>
+    @endif
+@endif
